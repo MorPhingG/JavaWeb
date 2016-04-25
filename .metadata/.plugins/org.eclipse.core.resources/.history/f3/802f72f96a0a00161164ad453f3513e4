@@ -1,0 +1,90 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<%!
+	public static final String DBDRIVER = "com.mysql.jdbc.Driver";
+	public static final String DBURL = "jdbc:mysql://127.0.0.1:3306/levy";
+	public static final String DBUSER = "root";
+	public static final String DBPASS = "93910";
+%>
+<%
+	Connection conn = null;
+	PreparedStatement pstmt = null;
+	ResultSet rs = null;
+%>
+<%
+try{
+	Class.forName(DBDRIVER);
+	conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
+	String sql = "select * from auth_user";
+	pstmt = conn.prepareStatement(sql);
+	rs = pstmt.executeQuery();
+	System.out.println("haha");
+%>
+<center>
+	<table border="1" width="80%">
+		<tr>
+			<td>Id</td>
+			<td>Name</td>
+			<td>Email</td>
+			<td>Password</td>
+		</tr>
+<%
+	while(rs.next()){
+		int id = rs.getInt(1);
+		String name = rs.getString(2);
+		String email = rs.getString(3);
+		String password = rs.getString(4);
+%>
+	<tr>
+		<td><%=id%></td>
+		<td><%=name%></td>
+		<td><%=email%></td>
+		<td><%=password%></td>
+	</tr>
+<% 
+	}
+%>
+<%-- <%
+	rs = pstmt.executeQuery();
+	while(rs.next()){
+		int id = rs.getInt(1);
+		String name = rs.getString(2);
+		String email = rs.getString(3);
+		String password = rs.getString(4);
+%>
+	<p>
+	id: <span id="id"></span> 
+	username: <span id="username"></span><br /> </p> 
+	<script type="text/javascript">
+	var txt = '{"users":[' +
+	'{"id":"Bill","username":"Gates"} ]}';
+
+	var obj = eval ("(" + txt + ")");
+
+	document.getElementById("id").innerHTML=obj.users[0].id 
+	document.getElementById("username").innerHTML=obj.users[0].username 
+</script>
+<% 
+	}
+%> --%>
+	</table>
+</center>
+<%
+}catch(Exception e){
+	System.out.println(e);
+}finally{
+	/* rs.close();
+	pstmt.close();
+	conn.close(); */
+}
+%>
+</body>
+</html>
